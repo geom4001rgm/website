@@ -13,6 +13,7 @@
       <h1>GEOM 4001 - Razz, Graham, Mahsa</h1>
     </header>
     <h2>Crowdsourced CO2 Readings</h2>
+    <div id="mapdiv"></div>
     One of the important factors in mitigating transmission of COVID-19 is ventilation of the space.
     However, it can be difficult to measure ventilation directly as a vistor to a space without access to
     specifications related to the building. CO2 monitoring can be done using a handheld device that is easily operated by people
@@ -21,6 +22,29 @@
 
     This project is set up to help the public make informed decisions about COVID-19 risk by allowing communitiy members who have access
     to CO2 monitoring technology to contribute data to our map, which can then be viewed by anyone.
-	<script src="index.js"></script>
+
+  <script>
+  var mymap = L.map('mapdiv').setView([45.380916, -75.698869], 13);
+
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoiZ2VvbTQwMDEiLCJhIjoiY2w4bmw3NjN0MDAwZzNvcDl6dnppZnp0YyJ9.5ewi5WQKlGiKEK4hMh8sjA'
+  }).addTo(mymap);
+
+  // Graham edit here
+  var arr = [{lat:45.3875, lng:-75.6960, name:"Carleton University"},
+              {lat:45.4231, lng:-75.6831, name:"University of Ottawa"},
+              {lat:45.3499, lng:-75.7549, name:"Algonquin College"}]
+  for(var i = 0; i < arr.length; i++){
+    console.log(arr[i]);
+    L.marker([arr[i].lat, arr[i].lng], {
+      title: arr[i].name
+    }).addTo(mymap).bindPopup(arr[i].name)
+  }
+
+  </script>
   </body>
 </html>
