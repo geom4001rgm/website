@@ -3,3 +3,7 @@ header{
   padding: 15px;
   color: #9FC490;
 }
+.mapdiv{
+  height: 500px;
+  width: 500px;
+}
