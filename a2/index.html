@@ -15,7 +15,6 @@
       <h1>GEOM 4001 - Razz, Graham, Mahsa</h1>
     </header>
     <h2>Crowdsourced CO2 Readings</h2>
-    <div id="mapdiv"></div>
     One of the important factors in mitigating transmission of COVID-19 is ventilation of the space.
     However, it can be difficult to measure ventilation directly as a vistor to a space without access to
     specifications related to the building. CO2 monitoring can be done using a handheld device that is easily operated by people
@@ -24,12 +23,21 @@
 
     This project is set up to help the public make informed decisions about COVID-19 risk by allowing communitiy members who have access
     to CO2 monitoring technology to contribute data to our map, which can then be viewed by anyone.
+    <p>
+    To submit information to this project, use the form on the right hand side of this page to submit a reading for a specific address. The data will be immediately
+    available on the map below this paragraph, simply find your location of interest and click on the pop up to view the reading. If multiple readings are available
+    for the same address we will show both the average and the most recent value.
 
-    <b>TEST</b>
+    <div id="stats"></div>
+    <div id="form" style="float: right;">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSccfd-8eJxj2f0K_ihW7Cx_vAcLjeZxkih6aNnAsgOmX0jSAQ/viewform?embedded=true" width="640" height="1702" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+    <div id="mapdiv"></div>
+
     <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.slim.min.js"></script>
     <script src="https://unpkg.com/sheetrock@1.2.0/dist/sheetrock.min.js"></script>
 
-    <table id="statistics" class="table table-condensed table-striped"></table>
+    <table id="statistics"></table>
     <script type="text/javascript">
       var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/14PQ1fBGC4CndH9_dHeaMcnQYwn7ON_AmREZSxR6o0Mg/edit#gid=0';
       var arr = []
@@ -54,17 +62,24 @@
           zoomOffset: -1,
           accessToken: 'pk.eyJ1IjoiZ2VvbTQwMDEiLCJhIjoiY2w4bmw3NjN0MDAwZzNvcDl6dnppZnp0YyJ9.5ewi5WQKlGiKEK4hMh8sjA'
         }).addTo(mymap);
+        var numValidLocs = 0;
+        var avgValue = 0;
         for(var i = 0; i < arr.length; i++){
-          console.log(arr[i]);
           if(isNaN(arr[i].lat) || isNaN(arr[i].lng)){
             console.log(arr[i].name + " does not contain valid coodinates")
           }
           else{
+            console.log(arr[i]);
             L.marker([arr[i].lat, arr[i].lng], {
               title: arr[i].name
             }).addTo(mymap).bindPopup(arr[i].name + "<p> CO2 Value (ppm): " + arr[i].value)
+            numValidLocs++;
+            avgValue += parseInt(arr[i].value);
           }
         }
+        console.log(numValidLocs);
+        console.log(avgValue/numValidLocs);
+        document.getElementById("stats").innerHTML = "Number of Submitted Locations: " + numValidLocs + "<p>Average CO2 Value: " + avgValue/numValidLocs;
       }
 
     </script>
