@@ -24,9 +24,9 @@
     This project is set up to help the public make informed decisions about COVID-19 risk by allowing communitiy members who have access
     to CO2 monitoring technology to contribute data to our map, which can then be viewed by anyone.
     <p>
-    To submit information to this project, use the form on the right hand side of this page to submit a reading for a specific address. The data will be immediately
+    To submit information to this project, use the form on the right hand side of this page to submit a reading for a specific address. Then reload the page and the data will be immediately
     available on the map below this paragraph, simply find your location of interest and click on the pop up to view the reading. If multiple readings are available
-    for the same address we will show both the average and the most recent value.
+    for the same address we will show the average value.
 
     <div id="stats"></div>
     <div id="form" style="float: right;">
@@ -51,7 +51,19 @@
         for(i in data){
           //if(i>1)
             //console.log(data[i].cellsArray[8])
-            arr.push({lat: parseFloat(data[i].cellsArray[5]), lng: parseFloat(data[i].cellsArray[6]), name: data[i].cellsArray[1], value: data[i].cellsArray[4]})
+
+            var t = arr.findIndex(function (element) {
+              return element.name === this.cellsArray[1];
+            }, data[i]);
+            if(t === -1){
+              arr.push({lat: parseFloat(data[i].cellsArray[5]), lng: parseFloat(data[i].cellsArray[6]), name: data[i].cellsArray[1], value: parseInt(data[i].cellsArray[4])})
+            }
+            else{
+              var v = (parseInt(data[i].cellsArray[4]) + arr[t].value)/2
+              arr.push({lat: parseFloat(data[i].cellsArray[5]), lng: parseFloat(data[i].cellsArray[6]), name: data[i].cellsArray[1], value: v})
+            }
+            //console.log(t)
+            //arr.push({lat: parseFloat(data[i].cellsArray[5]), lng: parseFloat(data[i].cellsArray[6]), name: data[i].cellsArray[1], value: data[i].cellsArray[4]})
         }
 
         var mymap = L.map('mapdiv').setView([45.380916, -75.698869], 13);
@@ -71,17 +83,13 @@
             console.log(arr[i].name + " does not contain valid coodinates")
           }
           else{
-            if(arr.slice(0,i).some(e => e.name === arr[i].name)){
-              //contains a duplicate
-              console.log("dup" + arr[i].name)
-            }
-            //console.log(arr.slice(0,i))
-            console.log(arr[i]);
-            L.marker([arr[i].lat, arr[i].lng], {
-              title: arr[i].name
-            }).addTo(mymap).bindPopup(arr[i].name + "<p> CO2 Value (ppm): " + arr[i].value)
-            numValidLocs++;
-            avgValue += parseInt(arr[i].value);
+              //console.log(arr.slice(0,i))
+              console.log(arr[i]);
+              L.marker([arr[i].lat, arr[i].lng], {
+                title: arr[i].name
+              }).addTo(mymap).bindPopup(arr[i].name + "<p> CO2 Value (ppm): " + arr[i].value)
+              numValidLocs++;
+              avgValue += parseInt(arr[i].value);
           }
         }
         console.log(numValidLocs);
