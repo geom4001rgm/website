@@ -31,35 +31,42 @@
 
     <table id="statistics" class="table table-condensed table-striped"></table>
     <script type="text/javascript">
-      var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/1qT1LyvoAcb0HTsi2rHBltBVpUBumAUzT__rhMvrz5Rk/edit#gid=0';
-
+      var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/14PQ1fBGC4CndH9_dHeaMcnQYwn7ON_AmREZSxR6o0Mg/edit#gid=0';
+      var arr = []
       // Load an entire worksheet.
       $('#statistics').sheetrock({
-        url: mySpreadsheet
+        url: mySpreadsheet,
+        callback: draw
       });
+      function draw(error, options, response) {
+        data=response.rows;
+        for(i in data){
+          if(i>1)
+            console.log(data[i].cellsArray[8])
+            arr.push({lat: parseFloat(data[i].cellsArray[8]), lng: parseFloat(data[i].cellsArray[9]), name: data[i].cellsArray[1], value: data[i].cellsArray[5]})
+        }
+        var mymap = L.map('mapdiv').setView([45.380916, -75.698869], 13);
+
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+          maxZoom: 18,
+          id: 'mapbox/streets-v11',
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken: 'pk.eyJ1IjoiZ2VvbTQwMDEiLCJhIjoiY2w4bmw3NjN0MDAwZzNvcDl6dnppZnp0YyJ9.5ewi5WQKlGiKEK4hMh8sjA'
+        }).addTo(mymap);
+        for(var i = 0; i < arr.length; i++){
+          console.log(arr[i]);
+          if(isNaN(arr[i].lat) || isNaN(arr[i].lng)){
+            console.log(arr[i].name + " does not contain valid coodinates")
+          }
+          else{
+            L.marker([arr[i].lat, arr[i].lng], {
+              title: arr[i].name
+            }).addTo(mymap).bindPopup(arr[i].name + "<p> CO2 Value (ppm): " + arr[i].value)
+          }
+        }
+      }
+
     </script>
-  <script>
-  var mymap = L.map('mapdiv').setView([45.380916, -75.698869], 13);
-
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoiZ2VvbTQwMDEiLCJhIjoiY2w4bmw3NjN0MDAwZzNvcDl6dnppZnp0YyJ9.5ewi5WQKlGiKEK4hMh8sjA'
-  }).addTo(mymap);
-
-  // Graham edit here
-  var arr = [{lat:45.3875, lng:-75.6960, name:"Carleton University"},
-              {lat:45.4231, lng:-75.6831, name:"University of Ottawa"},
-              {lat:45.3499, lng:-75.7549, name:"Algonquin College"}]
-  for(var i = 0; i < arr.length; i++){
-    console.log(arr[i]);
-    L.marker([arr[i].lat, arr[i].lng], {
-      title: arr[i].name
-    }).addTo(mymap).bindPopup(arr[i].name)
-  }
-
-  </script>
   </body>
 </html>
