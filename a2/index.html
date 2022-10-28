@@ -30,7 +30,7 @@
 
     <div id="stats"></div>
     <div id="form" style="float: right;">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSccfd-8eJxj2f0K_ihW7Cx_vAcLjeZxkih6aNnAsgOmX0jSAQ/viewform?embedded=true" width="640" height="1702" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfstbDHXPPVoPezdy3nSnyrZsppfL7NEQAVI5uVa50nuY4wLA/viewform?embedded=true" width="640" height="805" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
     <div id="mapdiv"></div>
 
@@ -50,9 +50,10 @@
         data=response.rows;
         for(i in data){
           if(i>1)
-            console.log(data[i].cellsArray[8])
+            //console.log(data[i].cellsArray[8])
             arr.push({lat: parseFloat(data[i].cellsArray[8]), lng: parseFloat(data[i].cellsArray[9]), name: data[i].cellsArray[1], value: data[i].cellsArray[5]})
         }
+
         var mymap = L.map('mapdiv').setView([45.380916, -75.698869], 13);
 
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -62,6 +63,7 @@
           zoomOffset: -1,
           accessToken: 'pk.eyJ1IjoiZ2VvbTQwMDEiLCJhIjoiY2w4bmw3NjN0MDAwZzNvcDl6dnppZnp0YyJ9.5ewi5WQKlGiKEK4hMh8sjA'
         }).addTo(mymap);
+
         var numValidLocs = 0;
         var avgValue = 0;
         for(var i = 0; i < arr.length; i++){
@@ -69,6 +71,9 @@
             console.log(arr[i].name + " does not contain valid coodinates")
           }
           else{
+            if(arr.slice(0,i).includes(arr[i])){
+              console.log("dup")
+            }
             console.log(arr[i]);
             L.marker([arr[i].lat, arr[i].lng], {
               title: arr[i].name
