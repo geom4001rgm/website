@@ -30,7 +30,7 @@
 
     <div id="stats"></div>
     <div id="form" style="float: right;">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfstbDHXPPVoPezdy3nSnyrZsppfL7NEQAVI5uVa50nuY4wLA/viewform?embedded=true" width="640" height="805" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfhOsjvOuq82VXBdl52uStWGz-CHka1GSo3l4BKeS3v9MOsCA/viewform?embedded=true" width="640" height="808" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
     <div id="mapdiv"></div>
 
@@ -39,7 +39,7 @@
 
     <table id="statistics"></table>
     <script type="text/javascript">
-      var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/14PQ1fBGC4CndH9_dHeaMcnQYwn7ON_AmREZSxR6o0Mg/edit#gid=0';
+      var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/1I63qyR7CEmXuvVWNkZmoKiLECNuT2_PP6JLXPkHG8a8/edit#gid=0';
       var arr = []
       // Load an entire worksheet.
       $('#statistics').sheetrock({
@@ -49,9 +49,9 @@
       function draw(error, options, response) {
         data=response.rows;
         for(i in data){
-          if(i>1)
+          //if(i>1)
             //console.log(data[i].cellsArray[8])
-            arr.push({lat: parseFloat(data[i].cellsArray[8]), lng: parseFloat(data[i].cellsArray[9]), name: data[i].cellsArray[1], value: data[i].cellsArray[5]})
+            arr.push({lat: parseFloat(data[i].cellsArray[5]), lng: parseFloat(data[i].cellsArray[6]), name: data[i].cellsArray[1], value: data[i].cellsArray[4]})
         }
 
         var mymap = L.map('mapdiv').setView([45.380916, -75.698869], 13);
@@ -71,9 +71,11 @@
             console.log(arr[i].name + " does not contain valid coodinates")
           }
           else{
-            if(arr.slice(0,i).includes(arr[i])){
-              console.log("dup")
+            if(arr.slice(0,i).some(e => e.name === arr[i].name)){
+              //contains a duplicate
+              console.log("dup" + arr[i].name)
             }
+            //console.log(arr.slice(0,i))
             console.log(arr[i]);
             L.marker([arr[i].lat, arr[i].lng], {
               title: arr[i].name
