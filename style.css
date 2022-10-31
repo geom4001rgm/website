@@ -1,9 +1,46 @@
+body{
+  padding: 5px;
+}
 header{
   background-color: #5C2751;
   padding: 15px;
   color: #9FC490;
+  border-radius: 25px;
+  text-align: center;
 }
 #mapdiv{
-  height: 500px;
-  width: 500px;
+    width: 500px;
+    height: 800px;
+}
+#stats-table{
+  border-collapse: collapse;
+  margin: 25px 0;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border: 10px solid #f39c6b;
+}
+
+#stats-table td {
+    padding: 12px 15px;
+    background-color: white;
+    border-bottom: 5px solid #f39c6b;
+}
+#data-table{
+  clear: both;
+}
+#form{
+  float: right;
+}
+.section{
+  background-color: #9FC490;
+  border: 15px solid #5C2751;
+  padding: 25px;
+}
+.text{
+  border-collapse: collapse;
+  margin: 25px 0;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  background-color: #f39c6b;
+  padding: 20px;
 }

@@ -11,10 +11,14 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
+    <a href="../index.html">Go Back to Homepage</a>
+
     <header>
       <h1>GEOM 4001 - Razz, Graham, Mahsa</h1>
     </header>
     <h2>Crowdsourced CO2 Readings</h2>
+
+    <div class="text">
     One of the important factors in mitigating transmission of COVID-19 is ventilation of the space.
     However, it can be difficult to measure ventilation directly as a vistor to a space without access to
     specifications related to the building. CO2 monitoring can be done using a handheld device that is easily operated by people
@@ -27,31 +31,55 @@
     To submit information to this project, use the form on the right hand side of this page to submit a reading for a specific address. Then reload the page and the data will be immediately
     available on the map below this paragraph, simply find your location of interest and click on the pop up to view the reading. If multiple readings are available
     for the same address we will show the average value.
-
-    <div id="stats"></div>
-    <div id="form" style="float: right;">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfhOsjvOuq82VXBdl52uStWGz-CHka1GSo3l4BKeS3v9MOsCA/viewform?embedded=true" width="640" height="808" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+  </div>
+    <div>
+      <h3>Location Statistics: </h3>
+      <table id="stats-table">
+        <tr>
+          <td>Number of Submissions:</td>
+          <td id="tablesubs"></td>
+        </tr>
+        <tr>
+          <td>Number of Valid Locations:</td>
+          <td id="tablelocs"></td>
+        </tr>
+        <tr>
+          <td>Average CO2 value (ppm)</td>
+          <td id="tableavg"></td>
+        </tr>
+      </table>
     </div>
-    <div id="mapdiv"></div>
+    <div class="section">
+    <div id="form">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfhOsjvOuq82VXBdl52uStWGz-CHka1GSo3l4BKeS3v9MOsCA/viewform?embedded=true" width="600" height="780" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+    <div id="map">
+      <div id="mapdiv">
+      </div>
+    </div>
+  </div>
 
     <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.slim.min.js"></script>
     <script src="https://unpkg.com/sheetrock@1.2.0/dist/sheetrock.min.js"></script>
-
-    <table id="statistics"></table>
+    <div id="data-table">
+      <h3>Full Data Table: </h3>
+      <table id="full-table"></table>
+    </div>
     <script type="text/javascript">
       var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/1I63qyR7CEmXuvVWNkZmoKiLECNuT2_PP6JLXPkHG8a8/edit#gid=0';
       var arr = []
       // Load an entire worksheet.
-      $('#statistics').sheetrock({
+      $('#full-table').sheetrock({
         url: mySpreadsheet,
         callback: draw
       });
       function draw(error, options, response) {
         data=response.rows;
+        var numSubs = 0;
         for(i in data){
           //if(i>1)
             //console.log(data[i].cellsArray[8])
-
+            numSubs++;
             var t = arr.findIndex(function (element) {
               return element.name === this.cellsArray[1];
             }, data[i]);
@@ -60,11 +88,12 @@
             }
             else{
               var v = (parseInt(data[i].cellsArray[4]) + arr[t].value)/2
-              arr.push({lat: parseFloat(data[i].cellsArray[5]), lng: parseFloat(data[i].cellsArray[6]), name: data[i].cellsArray[1], value: v})
+              arr.splice(t, 1, {lat: parseFloat(data[i].cellsArray[5]), lng: parseFloat(data[i].cellsArray[6]), name: data[i].cellsArray[1], value: v})
             }
             //console.log(t)
             //arr.push({lat: parseFloat(data[i].cellsArray[5]), lng: parseFloat(data[i].cellsArray[6]), name: data[i].cellsArray[1], value: data[i].cellsArray[4]})
         }
+        console.log(arr)
 
         var mymap = L.map('mapdiv').setView([45.380916, -75.698869], 13);
 
@@ -94,7 +123,9 @@
         }
         console.log(numValidLocs);
         console.log(avgValue/numValidLocs);
-        document.getElementById("stats").innerHTML = "Number of Submitted Locations: " + numValidLocs + "<p>Average CO2 Value: " + avgValue/numValidLocs;
+        document.getElementById("tablesubs").innerHTML = numSubs;
+        document.getElementById("tablelocs").innerHTML = numValidLocs;
+        document.getElementById("tableavg").innerHTML = avgValue/numValidLocs
       }
 
     </script>
