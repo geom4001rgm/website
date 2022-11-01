@@ -30,6 +30,10 @@ header{
 }
 #form{
   float: right;
+  width: 45%;
+}
+#map{
+  width: 45%;
 }
 .section{
   background-color: #9FC490;
