@@ -9,8 +9,9 @@ header{
   text-align: center;
 }
 #mapdiv{
-    width: 500px;
-    height: 800px;
+    width: 96%;
+    height: 96%;
+    margin: 2%;
 }
 #stats-table{
   border-collapse: collapse;
@@ -31,14 +32,15 @@ header{
 #form{
   float: right;
   width: 45%;
+  height: 800px;
+  background-color: #9FC490;
+  border: 15px solid #5C2751;
 }
 #map{
   width: 45%;
-}
-.section{
+  height: 800px;
   background-color: #9FC490;
   border: 15px solid #5C2751;
-  padding: 25px;
 }
 .text{
   border-collapse: collapse;
@@ -47,4 +49,8 @@ header{
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   background-color: #f39c6b;
   padding: 20px;
+}
+iframe{
+  width: 100%;
+  height: 100%;
 }
