@@ -42,7 +42,7 @@ d3.csv("https://raw.githubusercontent.com/geom4001rgm/website/main/a3/csv/farmag
   svg2.append("g")
     .call(d3.axisLeft(y));
 
-  var colors = ['#e41a1c','#377eb8','#4daf4a']
+  var colors = ['#e41a1c','#4daf4a','#377eb8']
 
   // color palette = one color per subgroup
   var color = d3.scaleOrdinal()
