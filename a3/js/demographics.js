@@ -9,7 +9,7 @@ const svg = d3.select("#demographic_viz")
   .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-d3.csv("https://raw.githubusercontent.com/geom4001rgm/website/main/a3/farmdata.csv").then( function(data) {
+d3.csv("https://raw.githubusercontent.com/geom4001rgm/website/main/a3/csv/farmdata.csv").then( function(data) {
 
   svg.append("text")
           .attr("x", (width / 2))
