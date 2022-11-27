@@ -28,7 +28,7 @@ svg3.append("g")
     .style("text-anchor", "end");
 
 var y = d3.scaleLinear()
-  .domain([0, 100000])
+  .domain([0, 150000])
   .range([ height, 0]);
 
 svg3.append("g")
@@ -43,7 +43,7 @@ svg3.selectAll("mybar")
     .attr("height", d => height - y(d.Number))
     .attr("fill", "#69b3a2")
 
-  console.log(data[0].Number)
+  console.log(data[0])
 
 svg3.append("g")
       .selectAll("g")
