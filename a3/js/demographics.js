@@ -10,7 +10,6 @@ const svg = d3.select("#demographic_viz")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
 d3.csv("https://raw.githubusercontent.com/geom4001rgm/website/main/a3/csv/farmdata.csv").then( function(data) {
-
   svg.append("text")
           .attr("x", (width / 2))
           .attr("y", 0 - (margin.top / 2))
@@ -19,7 +18,7 @@ d3.csv("https://raw.githubusercontent.com/geom4001rgm/website/main/a3/csv/farmda
           .style("text-decoration", "underline")
           .text("Characteristics of Farm Operators in Canada, 2021");
 
-const x = d3.scaleBand()
+var x = d3.scaleBand()
   .range([ 0, width ])
   .domain(data.map(d => d.Rule))
   .padding(0.2);
@@ -30,7 +29,7 @@ svg.append("g")
     .attr("transform", "translate(-5,0)rotate(-45)")
     .style("text-anchor", "end");
 
-const y = d3.scaleLinear()
+var y = d3.scaleLinear()
   .domain([0, 280000])
   .range([ height, 0]);
 svg.append("g")
